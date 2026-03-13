@@ -3,7 +3,7 @@
 $host = "localhost";
 $username = "root";
 $password = "";
-$database = "STUDENTS_DOCUMENT_REQUEST_AND_TRACKING_SYSTEM_FOR_THE_REGISTRARS_OFFICE";
+$database = "docu_request";
 
 $conn = mysqli_connect($host, $username, $password, $database);
 
