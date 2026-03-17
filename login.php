@@ -42,7 +42,7 @@ if (isset($_POST['login'])) {
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Login</title>
+<title>Logingfgfgrf</title>
 <style>
     /* General reset */
     * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }

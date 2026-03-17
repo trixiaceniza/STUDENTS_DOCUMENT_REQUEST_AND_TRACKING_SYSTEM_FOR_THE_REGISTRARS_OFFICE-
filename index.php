@@ -1,52 +1,28 @@
 <?php
-include 'db.php';
 session_start();
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+include 'Include/db.php';
+
+/*
+This page checks if a user is logged in.
+If logged in → redirect to their dashboard
+If not logged in → redirect to login page
+*/
+
+if(!isset($_SESSION['user_id'])){
+    header("Location: authentication/login.php");
     exit();
 }
-$result = $conn->query("SELECT * FROM users");
+
+// Redirect based on role
+if($_SESSION['role'] == "admin"){
+    header("Location: admin/dashboard/dashboard.php");
+    exit();
+}
+
+if($_SESSION['role'] == "student"){
+    header("Location: student/dashboard/dashboard.php");
+    exit();
+}
+
 ?>
 
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Students CRUD</title>
-</head>
-
-<body>
-
-    <h2>Student List</h2>
-
-    <a href="create.php">Add New Student</a>
-
-    <table border="1" cellpadding="10" cellspacing="0">
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Course</th>
-            <th>Actions</th>
-        </tr>
-
-        <?php while($row = $result->fetch_assoc()) { ?>
-
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo $row['name']; ?></td>
-            <td><?php echo $row['email']; ?></td>
-            <td><?php echo $row['course']; ?></td>
-            <td>
-                <a href="edit.php?id=<?php echo $row['id']; ?>">Edit</a>
-                <a href="delete.php?id=<?php echo $row['id']; ?>">Delete</a>
-            </td>
-        </tr>
-
-        <?php } ?>
-
-    </table>
-
-</body>
-
-</html>
