@@ -1,141 +1,67 @@
 <?php
 session_start();
-include 'db.php';
+include('Include/db.php');
 
-// Redirect if already logged in
-if (isset($_SESSION['user_id'])) {
-    header("Location: dashboard.php");
-    exit();
-}
-
-$error = '';
-
-// Handle form submission
 if (isset($_POST['login'])) {
-    $email = trim($_POST['email']);
+    $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $stmt = $conn->prepare("SELECT * FROM users WHERE email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $query = "SELECT * FROM users WHERE email='$email'";
+    $result = mysqli_query($conn, $query);
 
-    if ($result->num_rows > 0) {
-        $user = $result->fetch_assoc();
-        if (password_verify($password, $user['password'])) {
+    if (mysqli_num_rows($result) > 0) {
+        $user = mysqli_fetch_assoc($result);
+
+        if ($password == $user['password']) { // Plain password for now
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
-            header("Location: dashboard.php");
+            $_SESSION['role'] = strtolower($user['role']); // lowercase for consistency
+            $_SESSION['name'] = $user['name'];
+
+            if ($_SESSION['role'] == 'admin') {
+                header("Location: Admin/dashboard/view_dashboard.php");
+            } else {
+                header("Location: Student/dashboard/view_dashboard.php");
+            }
             exit();
         } else {
             $error = "Incorrect password!";
         }
+
     } else {
         $error = "User not found!";
+        $showRegister = true;
     }
-
-    $stmt->close();
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Logingfgfgrf</title>
-<style>
-    /* General reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: Arial, sans-serif; }
-
-    body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(to right, #eafe4f49, #fe6600);
-    }
-
-    .login-card {
-        background: #fff;
-        padding: 40px;
-        border-radius: 10px;
-        width: 350px;
-        box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        text-align: center;
-    }
-
-    .login-card h2 {
-        margin-bottom: 20px;
-        color: #333;
-    }
-
-    .login-card input[type="email"],
-    .login-card input[type="password"] {
-        width: 100%;
-        padding: 12px 15px;
-        margin: 10px 0;
-        border-radius: 5px;
-        border: 1px solid #ccc;
-    }
-
-    .login-card input[type="submit"] {
-        width: 100%;
-        padding: 12px;
-        margin-top: 15px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4ffec7;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        transition: background 0.3s ease;
-    }
-
-    .login-card input[type="submit"]:hover {
-        background-color: #00f2fe;
-    }
-
-    .login-card .error {
-        color: red;
-        margin-bottom: 10px;
-    }
-
-    .login-card .register-link {
-        margin-top: 15px;
-        font-size: 14px;
-    }
-
-    .login-card .register-link a {
-        color: #4ffea1;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    .login-card .register-link a:hover {
-        text-decoration: underline;
-    }
-
-    @media (max-width: 400px) {
-        .login-card {
-            width: 90%;
-            padding: 30px;
-        }
-    }
-</style>
+    <title>Login</title>
+    <style>
+        body { font-family: Arial; background: linear-gradient(to right, #4facfe, #00f2fe); }
+        .box { width: 350px; margin: 100px auto; background: white; padding: 30px; border-radius: 10px; text-align: center; }
+        input { width: 90%; padding: 10px; margin: 10px 0; }
+        button { padding: 10px 20px; background: #4facfe; color: white; border: none; border-radius: 5px; }
+        a { color: #007bff; text-decoration: none; }
+    </style>
 </head>
 <body>
 
-<div class="login-card">
-    <h2>Student Login</h2>
-    <?php if ($error) echo "<div class='error'>$error</div>"; ?>
+<div class="box">
+    <h2>Login</h2>
+
+    <?php if (isset($error)) echo "<p style='color:red;'>$error</p>"; ?>
+
     <form method="POST">
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <input type="submit" name="login" value="Login">
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit" name="login">Login</button>
     </form>
-    <div class="register-link">
-        Don't have an account? <a href="register.php">Register here</a>
-    </div>
+
+    <?php if (isset($showRegister)) { ?>
+        <p>No account? <a href="register.php">Register here</a></p>
+    <?php } ?>
 </div>
 
 </body>

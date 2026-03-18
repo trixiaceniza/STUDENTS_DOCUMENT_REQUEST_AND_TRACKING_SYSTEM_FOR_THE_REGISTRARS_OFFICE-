@@ -1,9 +1,9 @@
 <?php
 session_start();
-include '../../Include/db.php';
+include 'Include/db.php';
 
 if($_SESSION['role'] != "admin"){
-    header("Location: ../../authentication/login.php");
+    header("Location: login.php");
 }
 
 $sql = "SELECT * FROM requests";
@@ -35,21 +35,11 @@ $result = mysqli_query($conn,$sql);
 
 <td>
 
-<a href="approve_req.php?id=<?php echo $row['id']; ?>">
-Approve
-</a>
-
+<a href="approve_req.php?id=<?php echo $row['id']; ?>">Approve</a>
 |
-
-<a href="decline_req.php?id=<?php echo $row['id']; ?>">
-Decline
-</a>
-
+<a href="decline_req.php?id=<?php echo $row['id']; ?>">Decline</a>
 |
-
-<a href="set_sched.php?id=<?php echo $row['id']; ?>">
-Set Schedule
-</a>
+<a href="set_sched.php?id=<?php echo $row['id']; ?>">Set Schedule</a>
 
 </td>
 
@@ -61,4 +51,4 @@ Set Schedule
 
 <br><br>
 
-<a href="../dashboard/dashboard.php">Back</a>
+<a href="Admin/dashboard/view_dashboard.php">Back</a>
