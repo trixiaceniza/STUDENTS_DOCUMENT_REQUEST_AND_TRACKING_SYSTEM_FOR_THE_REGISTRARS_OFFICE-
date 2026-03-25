@@ -1,36 +1,89 @@
 <?php
-include '../../Include/db.php';
+include '../Include/db.php';
 
-$id = $_GET['id'];
+// Check if 'id' exists in URL
+if (isset($_GET['id']) && !empty($_GET['id'])) {
+    $id = $_GET['id'];
+
+}
 
 if(isset($_POST['submit'])){
-
     $schedule = $_POST['schedule'];
 
-    $sql = "UPDATE requests 
-            SET release_schedule='$schedule' 
-            WHERE id='$id'";
-
-    mysqli_query($conn,$sql);
+    $stmt = $conn->prepare("UPDATE requests SET release_schedule=? WHERE id=?");
+    $stmt->bind_param("si", $schedule, $id);
+    $stmt->execute();
+    $stmt->close();
 
     header("Location: view_req.php");
+    exit();
 }
 ?>
 
-<h2>Set Document Release Schedule</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Document Release Schedule</title>
+    <style>
+        /* Card container */
+        .card {
+            background: #fff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 400px;
+            text-align: center;
+        }
 
-<form method="POST">
+        h2 {
+            margin-bottom: 30px;
+            color: #333;
+        }
 
-<label>Select Release Date:</label>
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #555;
+            text-align: left;
+        }
 
-<br><br>
+        input[type="date"] {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
 
-<input type="date" name="schedule" required>
+        button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
 
-<br><br>
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
 
-<button type="submit" name="submit">
-Set Schedule
-</button>
+<div class="card">
+    <h2>Set Document Release Schedule</h2>
 
-</form>
+    <form method="POST">
+        <label>Select Release Date:</label>
+        <input type="date" name="schedule" required>
+        <button type="submit" name="submit">Set Schedule</button>
+    </form>
+</div>
+
+</body>
+</html>

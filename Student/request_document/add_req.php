@@ -2,43 +2,26 @@
 session_start();
 include '../../Include/db.php';
 
-if($_SESSION['role'] != "student"){
-    header("Location: ../../authentication/login.php");
-}
-
 if(isset($_POST['submit'])){
+    $user_id = $_SESSION['user_id'];
+    $doc = $_POST['document_type'];
 
-    $student_id = $_SESSION['user_id'];
-    $document = $_POST['document_type'];
 
-    $sql = "INSERT INTO requests(student_id, document_type)
-            VALUES('$student_id','$document')";
+    $conn->query("INSERT INTO requests (student_id, document_type)
+                  VALUES ('$user_id','$doc')");
 
-    mysqli_query($conn,$sql);
-
-    echo "Request Submitted!";
+    header("Location: view_req.php");
 }
 ?>
 
-<h2>Request Document</h2>
-
 <form method="POST">
+    Document:
+    <select name="document_type">
+        <option>Transcript of Records</option>
+        <option>Certificate of Enrollment</option>
+         <option>Course Prospectus</option>
+    </select><br>
 
-<select name="document_type">
 
-<option>Transcript of Records</option>
-<option>Certificate of Enrollment</option>
-<option>Grades</option>
-<option>Good Moral Character</option>
-
-</select>
-
-<br><br>
-
-<button type="submit" name="submit">Submit Request</button>
-
+    <button name="submit">Submit</button>
 </form>
-
-<br>
-
-<a href="../dashboard/view_dashboard.php">Back</a>

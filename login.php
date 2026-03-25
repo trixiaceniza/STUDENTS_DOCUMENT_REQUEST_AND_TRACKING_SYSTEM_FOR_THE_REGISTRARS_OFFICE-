@@ -25,7 +25,7 @@ if($result->num_rows > 0){
         header("Location: Admin/view_dashboard.php");
         exit();
     } else {
-        header("Location: Student/dashboard/view_dashboard.php");
+        header("Location: Student/view_dashboard.php");
         exit();
     }
 } else {
