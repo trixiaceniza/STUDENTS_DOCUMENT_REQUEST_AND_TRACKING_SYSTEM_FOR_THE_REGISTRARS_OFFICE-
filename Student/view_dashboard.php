@@ -94,7 +94,7 @@ button:hover {
     <h3>Student</h3>
 
     <a href="?page=home" class="<?= $page=='home'?'active':'' ?>">🏠 Dashboard</a>
-    <a href="?page=view_req.php" class="<?= $page=='view_req.php'?'active':'' ?>">📄 Request</a>
+    <a href="?page=request" class="<?= $page=='request'?'active':'' ?>">📄 Request</a>
     <a href="?page=schedule" class="<?= $page=='schedule'?'active':'' ?>">📅 View Schedule</a>
     <a href="../logout.php">🚪 Logout</a>
 </div>
@@ -105,27 +105,33 @@ button:hover {
 <?php
 switch($page){
 
-    case 'view_req.php':
-        ?>
-        <div class="card">
-            <h2>📄 Request Document</h2>
-            <?php if(isset($success_msg)) echo "<p class='success-msg'>{$success_msg}</p>"; ?>
-            <form method="POST">
-                <select name="doc" required>
-                    <option value="">-- Select Document --</option>
-                    <?php
-                    // Fetch available documents from admin's documents table
-                    $res = $conn->query("SELECT * FROM documents WHERE status='Available'");
-                    while($row = $res->fetch_assoc()){
-                        echo "<option value='{$row['name']}'>{$row['name']}</option>";
-                    }
-                    ?>
-                </select>
-                <button name="submit">Request</button>
-            </form>
-        </div>
-        <?php
-        break;
+   case 'request':
+?>
+
+<div class="card">
+<h2>📄 Request Document</h2>
+
+<form method="POST">
+
+<select name="doc" required>
+<option value="">-- Select Document --</option>
+
+<?php
+$result = $conn->query("SELECT * FROM documents WHERE status='Available'");
+
+while($row = $result->fetch_assoc()){
+    echo "<option value='".$row['name']."'>".$row['name']."</option>";
+}
+?>
+
+</select>
+
+<button name="submit">Request</button>
+</form>
+</div>
+
+<?php
+break;
 
     case 'schedule':
         include __DIR__ . '/view_sched.php';

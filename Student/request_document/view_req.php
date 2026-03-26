@@ -11,7 +11,7 @@ if(!isset($_SESSION['role']) || $_SESSION['role'] != 'admin'){
 $result = $conn->query("
     SELECT r.*, s.name AS student_name 
     FROM requests r
-    JOIN students s ON r.student_id = s.id
+    JOIN students s ON r.student_name = s.id
     ORDER BY r.request_date DESC
 ");
 ?>

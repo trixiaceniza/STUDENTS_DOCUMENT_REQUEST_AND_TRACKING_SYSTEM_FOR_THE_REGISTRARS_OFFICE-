@@ -168,7 +168,6 @@ input, select {
         <h2>Admin Panel</h2>
         <a href="?page=home" class="<?= $page=='home'?'active':'' ?>">🏠 Dashboard</a>
         <a href="?page=requests" class="<?= $page=='requests'?'active':'' ?>">📄 Student Request</a>
-        <a href="?page=schedule" class="<?= $page=='schedule'?'active':'' ?>">📅 View Schedule</a>
         <a href="?page=documents" class="<?= $page=='documents'?'active':'' ?>">📚 Manage Documents</a>
         <a href="../logout.php">🚪 Logout</a>
     </div>

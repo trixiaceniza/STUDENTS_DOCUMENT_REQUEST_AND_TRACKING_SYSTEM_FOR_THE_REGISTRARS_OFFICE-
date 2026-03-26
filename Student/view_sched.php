@@ -5,7 +5,7 @@ include '../Include/db.php';
 $result = $conn->query("
     SELECT r.*, u.name 
     FROM requests r
-    JOIN users u ON r.student_id = u.id
+    JOIN users u ON r.student_name = u.id
     WHERE r.status = 'Approved'
 ");
 ?>

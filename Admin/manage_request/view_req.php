@@ -74,8 +74,7 @@ $result = mysqli_query($conn,$sql);
 
 <table class="table">
 <tr>
-    <th>ID</th>
-    <th>Student ID</th>
+    <th>Student Name</th>
     <th>Document</th>
     <th>Status</th>
     <th>Release Schedule</th>
@@ -85,8 +84,7 @@ $result = mysqli_query($conn,$sql);
 <?php while($row = mysqli_fetch_assoc($result)){ ?>
 
 <tr>
-<td><?= $row['id']; ?></td>
-<td><?= $row['student_id']; ?></td>
+<td><?= $row['student_name']; ?></td>
 <td><?= $row['document_type']; ?></td>
 
 <td>

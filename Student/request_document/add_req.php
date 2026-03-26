@@ -3,11 +3,11 @@ session_start();
 include '../../Include/db.php';
 
 if(isset($_POST['submit'])){
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['student_name'];
     $doc = $_POST['document_type'];
 
 
-    $conn->query("INSERT INTO requests (student_id, document_type)
+    $conn->query("INSERT INTO requests (student_name, document_type)
                   VALUES ('$user_id','$doc')");
 
     header("Location: view_req.php");
